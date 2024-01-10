@@ -8,15 +8,22 @@ public class OrbitCamera : MonoBehaviour
     //[SerializeField] private Vector3 camOffset;
 
     [SerializeField] float mouseSensitivity = 0.2f;
-    [SerializeField, Range(20, 90)] float pitch = 40;
+    [SerializeField, Range(20, 90)] float defaultPitch = 40;
     [SerializeField, Range(2, 10)] float distance = 5;
 
     float yaw = 0;
+    float pitch = 0;
 
-    // Update is called once per frame
-    void Update()
+	private void Start()
+	{
+        pitch = defaultPitch;
+	}
+
+	// Update is called once per frame
+	void Update()
     {
         yaw += Input.GetAxis("Mouse X") * mouseSensitivity;
+        pitch += Input.GetAxis("Mouse Y") * mouseSensitivity;
 
         Quaternion qyaw = Quaternion.AngleAxis(yaw, Vector3.up);
         Quaternion qpitch = Quaternion.AngleAxis(pitch, Vector3.right);
