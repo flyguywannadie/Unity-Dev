@@ -7,6 +7,8 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private TMP_Text scoreText;
 
+    
+
     private int score = 0;
     private float health = 100;
 

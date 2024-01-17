@@ -20,7 +20,6 @@ public class PhysicsCharacterController : MonoBehaviour
     void Start()
     {
         rayLength = GetComponent<Collider>().bounds.extents.y + 0.1f;
-        Cursor.lockState = CursorLockMode.Locked;
         rb = GetComponent<Rigidbody>();
     }
 
