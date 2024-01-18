@@ -25,12 +25,15 @@ public class Pickup : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-        if (other.gameObject.TryGetComponent(out Player player))
+        if (other.CompareTag("Player"))
         {
-            player.AddPoint(10);
-        }
+            if (other.gameObject.TryGetComponent(out Player player))
+            {
+                player.AddPoint(10);
+            }
 
-        Instantiate(pickupEffect, transform.position, Quaternion.identity);
-        Destroy(this.gameObject);
+            Instantiate(pickupEffect, transform.position, Quaternion.identity);
+            Destroy(this.gameObject);
+        }
 	}
 }

@@ -10,52 +10,52 @@ public class PlayerElementSpawner : MonoBehaviour
     
     [SerializeField] private float pSplatTimer = 1.5f;
     private float passiveSplat;
-    [SerializeField] private float airtimer = 0;
-    [SerializeField] private bool onGround = true;
 
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = player.transform.position + (player.transform.up * -1 * player.gameObject.GetComponent<SphereCollider>().radius);
-        passiveSplat = pSplatTimer;
-        SpawnSplatter();
+        //transform.position = player.transform.position + (player.transform.up * -1 * player.gameObject.GetComponent<SphereCollider>().radius);
+        passiveSplat = 0;
+        SpawnSplatter(Vector3.down);
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position = player.transform.position - (Vector3.up * player.gameObject.GetComponent<SphereCollider>().radius);
+        transform.position = player.transform.position;// - (Vector3.up * player.gameObject.GetComponent<SphereCollider>().radius);
 
-        if (onGround && player.GetComponent<Rigidbody>().velocity.magnitude > 1)
+        if (OnGround())
         {
-            passiveSplat -= Time.deltaTime;
-            if (passiveSplat <= 0)
+            if (Input.GetMouseButton(1))
             {
-                passiveSplat = pSplatTimer / player.GetComponent<Rigidbody>().velocity.magnitude;
-                SpawnSplatter();
-            }
-        }
-        else if(!onGround)
-        {
-            airtimer += Time.deltaTime;
+				passiveSplat -= Time.deltaTime;
+				if (passiveSplat <= 0)
+				{
+					passiveSplat = Mathf.Clamp(pSplatTimer / player.GetComponent<Rigidbody>().velocity.magnitude, 0f, pSplatTimer);
+					SpawnSplatter(Vector3.down);
+				}
+			}
         }
     }
 
-    private void SpawnSplatter()
+    private void SpawnSplatter(Vector3 direction)
     {
-		Physics.Raycast(player.transform.position, Vector3.down, out RaycastHit hit);
-		GameObject splatter = Instantiate(elementSplatter, hit.point, Quaternion.identity);
+        RaycastHit hit;
+        Physics.Raycast(player.transform.position + (Vector3.up * 0.9f), direction - (Vector3.up * 0.9f), out hit);
 
-        splatter.transform.localScale = new Vector3(splatter.transform.localScale.x + (airtimer/2), 1, splatter.transform.localScale.z + (airtimer / 2));
-		airtimer = 0;
+		GameObject splatter = Instantiate(elementSplatter, hit.point, Quaternion.identity);
+        splatter.transform.LookAt(hit.point + hit.normal);
+        splatter.transform.Rotate(90, 0, 0);
+
+        splatter.transform.localScale = new Vector3(splatter.transform.localScale.x + (player.GetComponent<Rigidbody>().velocity.magnitude / 5), 1, splatter.transform.localScale.z + (player.GetComponent<Rigidbody>().velocity.magnitude / 5));
 	}
 
 	private void OnTriggerEnter(Collider other)
 	{
 		if (other.CompareTag("ElementCoverage"))
         {
-            onGround = true;
-            SpawnSplatter();
+            print(other.ClosestPoint(transform.position));
+            SpawnSplatter(other.ClosestPoint(transform.position) - transform.position);
         }
 	}
 
@@ -63,8 +63,17 @@ public class PlayerElementSpawner : MonoBehaviour
 	{
 		if (other.CompareTag("ElementCoverage"))
 		{
-			onGround = false;
 			//SpawnSplatter();
 		}
 	}
+
+    private bool OnGround()
+    {
+        Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, gameObject.GetComponent<SphereCollider>().bounds.extents.y);
+        if (!hit.collider)
+        {
+            return false;
+        }
+        return hit.collider.CompareTag("ElementCoverage");
+    }
 }
