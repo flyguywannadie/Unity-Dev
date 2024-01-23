@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageable
 {
     [SerializeField] private TMP_Text scoreText;
-    [SerializeField] private FloatVariable health;
     [SerializeField] private PhysicsCharacterController characterController;
     [Header("Events")]
-    [SerializeField] IntEvent scoreEvent = default;
     [SerializeField] VoidEvent gameStartEvent = default;
+    [SerializeField] VoidEvent playerDeadEvent = default;
+    [SerializeField] GameObjectEvent respawnEvent = default;
 
 	private int score = 0;
 
     private void Start()
     {
-        health.value = 5.5f;
+
     }
 
     private void OnEnable()
@@ -27,9 +27,8 @@ public class Player : MonoBehaviour
     public int Score {
         get { return score; }
         set { 
-            score = value;
-            scoreText.text = "Score: " + score.ToString();
-            scoreEvent.RaiseEvent(score);
+            score = value;//
+            scoreText.text = score.ToString();
         }
     }
 
@@ -41,5 +40,23 @@ public class Player : MonoBehaviour
     public void OnStartGame()
     {
         characterController.enabled = true;
+    }
+
+	public void OnRestartGame()
+	{
+        Score = 0;
+	}
+
+	public void Hurt(float damage)
+    {
+        playerDeadEvent.RaiseEvent();
+		characterController.enabled = false;
+	}
+
+    public void OnRespawn(GameObject respawn)
+    {
+        transform.position = respawn.transform.position;
+        transform.rotation = respawn.transform.rotation;
+        characterController.Reset();
     }
 }

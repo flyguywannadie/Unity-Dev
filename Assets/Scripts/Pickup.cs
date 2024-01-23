@@ -5,22 +5,19 @@ using UnityEngine;
 public class Pickup : MonoBehaviour
 {
     [SerializeField] GameObject pickupEffect = null;
+    [SerializeField] GameObject visuals;
+    [SerializeField] Collider collision;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private int pointstoadd = 1;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	private void Start()
+	{
+		collision = GetComponent<Collider>();
+	}
 
 	private void OnCollisionEnter(Collision collision)
 	{
-        print(collision.gameObject.name);
+        print(collision.gameObject.name);//
 	}
 
 	private void OnTriggerEnter(Collider other)
@@ -29,11 +26,19 @@ public class Pickup : MonoBehaviour
         {
             if (other.gameObject.TryGetComponent(out Player player))
             {
-                player.AddPoint(10);
+                player.AddPoint(pointstoadd);
             }
 
             Instantiate(pickupEffect, transform.position, Quaternion.identity);
-            Destroy(this.gameObject);
+            visuals.SetActive(false);
+            collision.enabled = false;
+            //Destroy(this.gameObject);
         }
+	}
+
+    public void Uncollect()
+    {
+        visuals.SetActive(true);
+		collision.enabled = true;
 	}
 }

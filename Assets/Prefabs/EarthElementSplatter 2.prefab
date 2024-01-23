@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2726846809273263411}
   - component: {fileID: 9051965456613997093}
   - component: {fileID: 7645345774068420739}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1120,7 +1120,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1c7c92d0d4e9d404fb344e9d1188b331, type: 2}
+  - {fileID: 2100000, guid: 42d54995e1fb8004c808bc5c87266ad5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1182,9 +1182,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1864733063280109728}
   - component: {fileID: 3822652700503388081}
-  m_Layer: 0
+  - component: {fileID: 5318764779577964655}
+  m_Layer: 3
   m_Name: EarthElementSplatter 2
-  m_TagString: Untagged
+  m_TagString: ElementCoverage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1218,3 +1219,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aliveTime: 30
+  stuckto: {fileID: 0}
+--- !u!114 &5318764779577964655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5350707595363025847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a00588975b35f1542b1a67f3ca2b2760, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _event: {fileID: 11400000, guid: 35d066ac371e7b04ca7bffc62676d7e4, type: 2}
+  listener:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3822652700503388081}
+        m_TargetAssemblyTypeName: ElementSplatter, Assembly-CSharp
+        m_MethodName: CleanUp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

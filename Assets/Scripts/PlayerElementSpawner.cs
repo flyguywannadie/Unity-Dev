@@ -26,14 +26,11 @@ public class PlayerElementSpawner : MonoBehaviour
 
         if (OnGround())
         {
-            if (Input.GetMouseButton(1))
-            {
-				passiveSplat -= Time.deltaTime;
-				if (passiveSplat <= 0)
-				{
-					passiveSplat = Mathf.Clamp(pSplatTimer / player.GetComponent<Rigidbody>().velocity.magnitude, 0f, pSplatTimer);
-					SpawnSplatter(Vector3.down);
-				}
+			passiveSplat -= Time.deltaTime;
+			if (passiveSplat <= 0)
+			{
+				passiveSplat = Mathf.Clamp(pSplatTimer / player.GetComponent<Rigidbody>().velocity.magnitude, 0f, pSplatTimer);
+				SpawnSplatter(Vector3.down);
 			}
         }
     }
@@ -44,6 +41,7 @@ public class PlayerElementSpawner : MonoBehaviour
         Physics.Raycast(player.transform.position + (Vector3.up * 0.9f), direction - (Vector3.up * 0.9f), out hit);
 
 		GameObject splatter = Instantiate(elementSplatter, hit.point, Quaternion.identity);
+        splatter.GetComponent<ElementSplatter>().StuckTo = hit.transform.gameObject;
         splatter.transform.LookAt(hit.point + hit.normal);
         splatter.transform.Rotate(90, 0, 0);
 
@@ -54,7 +52,6 @@ public class PlayerElementSpawner : MonoBehaviour
 	{
 		if (other.CompareTag("ElementCoverage"))
         {
-            print(other.ClosestPoint(transform.position));
             SpawnSplatter(other.ClosestPoint(transform.position) - transform.position);
         }
 	}

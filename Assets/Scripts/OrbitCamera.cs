@@ -22,16 +22,19 @@ public class OrbitCamera : MonoBehaviour
 	// Update is called once per frame
 	void Update()
     {
-        yaw += Input.GetAxis("Mouse X") * mouseSensitivity;
-        pitch += Input.GetAxis("Mouse Y") * mouseSensitivity;
+        if (GameManager.Instance.state == GameManager.State.MAIN_GAME)
+        {
+            yaw += Input.GetAxis("Mouse X") * mouseSensitivity;
+            pitch -= Input.GetAxis("Mouse Y") * mouseSensitivity;
 
-        Quaternion qyaw = Quaternion.AngleAxis(yaw, Vector3.up);
-        Quaternion qpitch = Quaternion.AngleAxis(pitch, Vector3.right);
+            Quaternion qyaw = Quaternion.AngleAxis(yaw, Vector3.up);
+            Quaternion qpitch = Quaternion.AngleAxis(pitch, Vector3.right);
 
-        Quaternion rotation = qyaw * qpitch;
+            Quaternion rotation = qyaw * qpitch;
 
-        //transform.position = target.transform.position + camOffset;
-        transform.position = target.transform.position + (rotation * (Vector3.back * distance));
-        transform.rotation = rotation;
+            //transform.position = target.transform.position + camOffset;
+            transform.position = target.transform.position + (rotation * (Vector3.back * distance));
+            transform.rotation = rotation;
+        }
     }
 }
