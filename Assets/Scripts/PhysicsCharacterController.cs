@@ -13,6 +13,7 @@ public class PhysicsCharacterController : MonoBehaviour
     [Header("Collision")]
     [SerializeField][Range(0,5)] float rayLength = 1;
     [SerializeField] LayerMask groundLayerMask;
+    [SerializeField] AudioSource jumpsound;
 
 	Rigidbody rb;
     Vector3 force = Vector3.zero;
@@ -39,6 +40,7 @@ public class PhysicsCharacterController : MonoBehaviour
 
 			if (Input.GetButtonDown("Jump") && CheckGround())
 			{
+                jumpsound.Play();
 				Vector3 jumpdirection = Vector3.up;
 				Collider[] splatters = Physics.OverlapSphere(transform.position, 1.1f, groundLayerMask);
 				foreach (Collider splat in splatters)

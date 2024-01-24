@@ -12,7 +12,7 @@ public class Rotator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        transform.rotation = Quaternion.Euler(Random.Range(0, 360) * axis.x, Random.Range(0, 360) * axis.y, Random.Range(0, 360) * axis.z);
     }
 
     // Update is called once per frame

@@ -12,6 +12,7 @@ public class MovingPlatform : MonoBehaviour
 		if (collision.collider.CompareTag("Player"))
 		{
 			initialOffset = collision.transform.position - transform.position;
+			lastposition = collision.transform.position;
 		}
 	}
 

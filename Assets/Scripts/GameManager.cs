@@ -10,20 +10,21 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] GameObject titleUI;
     [SerializeField] GameObject gameUI;
     [SerializeField] GameObject gameOverUI;
+    [SerializeField] GameObject gameWinUI;
     [SerializeField] TMP_Text livesUI;
 
 
     [SerializeField] GameObject respawn;
     [SerializeField] GameObject startingRespawn;
 
-	[Header("Events")]
+    [Header("Events")]
     //[SerializeField] IntEvent scoreEvent;
     [SerializeField] VoidEvent gameStartEvent;
     [SerializeField] GameObjectEvent respawnEvent;
     [SerializeField] VoidEvent gameRestartEvent;
 
-    public enum State { 
-        TITLE, START_GAME, MAIN_GAME, GAME_OVER
+    public enum State {
+        TITLE, START_GAME, MAIN_GAME, GAME_OVER, GAME_WIN
     }
 
     public State state = State.TITLE;
@@ -31,8 +32,8 @@ public class GameManager : Singleton<GameManager>
 
     public int Lives { get { return lives; } set { lives = value; livesUI.text = "x " + lives.ToString(); } }
 
-	// Start is called before the first frame update
-	void Start()
+    // Start is called before the first frame update
+    void Start()
     {
         //scoreEvent.onEventRaised += OnAddPoints;
     }
@@ -40,54 +41,67 @@ public class GameManager : Singleton<GameManager>
     // Update is called once per frame
     void Update()
     {
-		switch (state)
-		{
-			case State.TITLE:
+        switch (state)
+        {
+            case State.TITLE:
                 titleUI.SetActive(true);
                 gameUI.SetActive(false);
-				gameOverUI.SetActive(false);
+                gameOverUI.SetActive(false);
+				gameWinUI.SetActive(false);
 				Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-				break;
+                break;
 
-			case State.START_GAME:
+            case State.START_GAME:
                 titleUI.SetActive(false);
-				gameUI.SetActive(true);
+                gameUI.SetActive(true);
                 state = State.MAIN_GAME;
-				Cursor.lockState = CursorLockMode.Locked;
-				Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
                 gameStartEvent.RaiseEvent();
                 respawnEvent.RaiseEvent(respawn);
-				break;
+                break;
 
-			case State.MAIN_GAME:
+            case State.MAIN_GAME:
                 if (this.Lives <= 0)
                 {
                     state = State.GAME_OVER;
-					gameOverUI.SetActive(true);
-					gameUI.SetActive(false);
-				}
-				break;
+                    gameOverUI.SetActive(true);
+                    gameUI.SetActive(false);
+                }
+                break;
 
-			case State.GAME_OVER:
-				Cursor.lockState = CursorLockMode.None;
-				Cursor.visible = true;
-				break;
-		}
-	}
+            case State.GAME_OVER:
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                break;
+
+            case State.GAME_WIN:
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                break;
+        }
+    }
 
     public void StartGame()
     {
         state = State.START_GAME;
-		this.Lives = 3;
-	}
+        this.Lives = 3;
+    }
 
     public void RestartGame()
     {
         state = State.TITLE;
-		respawn = startingRespawn;
+        respawn = startingRespawn;
         gameRestartEvent.RaiseEvent();
     }
+
+    public void WinGame()
+    {
+        gameWinUI.SetActive(true);
+		gameUI.SetActive(false);
+        state = State.GAME_WIN;
+	}
 
     public void ChangeRespawn(GameObject newspawn)
     {

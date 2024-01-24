@@ -26,10 +26,10 @@ public class PlayerElementSpawner : MonoBehaviour
 
         if (OnGround())
         {
-			passiveSplat -= Time.deltaTime;
-			if (passiveSplat <= 0)
+			passiveSplat += Time.deltaTime;
+			if (passiveSplat >= Mathf.Clamp(pSplatTimer / player.GetComponent<Rigidbody>().velocity.magnitude, 0f, pSplatTimer))
 			{
-				passiveSplat = Mathf.Clamp(pSplatTimer / player.GetComponent<Rigidbody>().velocity.magnitude, 0f, pSplatTimer);
+				passiveSplat = 0;
 				SpawnSplatter(Vector3.down);
 			}
         }
@@ -37,15 +37,22 @@ public class PlayerElementSpawner : MonoBehaviour
 
     private void SpawnSplatter(Vector3 direction)
     {
-        RaycastHit hit;
-        Physics.Raycast(player.transform.position + (Vector3.up * 0.9f), direction - (Vector3.up * 0.9f), out hit);
+        if (GameManager.Instance.state == GameManager.State.MAIN_GAME)
+        {
+			RaycastHit hit;
+			Physics.Raycast(player.transform.position + (Vector3.up * 0.9f), direction - (Vector3.up * 0.75f), out hit);
 
-		GameObject splatter = Instantiate(elementSplatter, hit.point, Quaternion.identity);
-        splatter.GetComponent<ElementSplatter>().StuckTo = hit.transform.gameObject;
-        splatter.transform.LookAt(hit.point + hit.normal);
-        splatter.transform.Rotate(90, 0, 0);
+			GameObject splatter = Instantiate(elementSplatter, hit.point, Quaternion.identity);
+			splatter.GetComponent<ElementSplatter>().StuckTo = hit.transform.gameObject;
+            while (splatter.GetComponent<ElementSplatter>().StuckTo.GetComponentInParent<ElementSplatter>())
+            {
+                splatter.GetComponent<ElementSplatter>().StuckTo = splatter.GetComponent<ElementSplatter>().StuckTo.GetComponentInParent<ElementSplatter>().StuckTo;
+			}
+			splatter.transform.LookAt(hit.point + hit.normal);
+			splatter.transform.Rotate(90, 0, 0);
 
-        splatter.transform.localScale = new Vector3(splatter.transform.localScale.x + (player.GetComponent<Rigidbody>().velocity.magnitude / 5), 1, splatter.transform.localScale.z + (player.GetComponent<Rigidbody>().velocity.magnitude / 5));
+			splatter.transform.localScale = new Vector3(splatter.transform.localScale.x + (player.GetComponent<Rigidbody>().velocity.magnitude / 5), 1, splatter.transform.localScale.z + (player.GetComponent<Rigidbody>().velocity.magnitude / 5));
+		}
 	}
 
 	private void OnTriggerEnter(Collider other)
