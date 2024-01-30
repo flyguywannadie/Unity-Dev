@@ -87,13 +87,13 @@ public class GameManager : Singleton<GameManager>
     {
         state = State.START_GAME;
         this.Lives = 3;
-    }
+		gameRestartEvent.RaiseEvent();
+	}
 
     public void RestartGame()
     {
         state = State.TITLE;
         respawn = startingRespawn;
-        gameRestartEvent.RaiseEvent();
     }
 
     public void WinGame()
