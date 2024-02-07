@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7493118943142168677}
   - component: {fileID: 8450947760116573104}
   - component: {fileID: 8746650568047974768}
+  - component: {fileID: 970556168345376076}
   m_Layer: 0
   m_Name: SplineForFollower
   m_TagString: Untagged
@@ -166,6 +167,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 439d3dd7c070b634f8e9550dac1c669f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &970556168345376076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2008018836660892597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6c4c163bb5f8864a816289969e92bf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifespan: 5
 --- !u!1 &6420604078213203412
 GameObject:
   m_ObjectHideFlags: 0

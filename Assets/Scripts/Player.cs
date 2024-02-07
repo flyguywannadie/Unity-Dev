@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class Player : MonoBehaviour, IDamageable
+public class Player : MonoBehaviour, IDamagable
 {
     [SerializeField] private TMP_Text scoreText;
     [SerializeField] private PhysicsCharacterController characterController;
@@ -47,7 +47,7 @@ public class Player : MonoBehaviour, IDamageable
         Score = 0;
 	}
 
-	public void Hurt(float damage)
+	public void ApplyDamage(float damage)
     {
         playerDeadEvent.RaiseEvent();
 		characterController.enabled = false;

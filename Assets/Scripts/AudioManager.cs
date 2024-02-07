@@ -6,5 +6,7 @@ public class AudioManager : Singleton<AudioManager>
 {
     [SerializeField] AudioSource audio;
 
-
+    public void PlaySound(AudioClip clip)
+    {
+    }
 }
