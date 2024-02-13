@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aec73e0c87b7cd24e80cf6db9a4326e5, type: 3}
-  m_Name: EpicWeapon
+  m_Name: EnemyWeapon
   m_EditorClassIdentifier: 
-  id: 2
-  description: TAKE THAT OBAMA, YOU IDIOT
+  id: 1
+  description: enemyweapon
   icon: {fileID: 0}
   allowMultiple: 0
   equipable: 1
@@ -26,4 +26,4 @@ MonoBehaviour:
   fireRate: 0
   spread: {x: 100, y: 100, z: 100}
   rounds: 0
-  ammoPrefab: {fileID: 6287799562401925444, guid: 8e7fdf10ec9bf5a468fb0597609eb3b8, type: 3}
+  ammoPrefab: {fileID: 6287799562401925444, guid: 614d45a83935f734386d0976a51f954e, type: 3}

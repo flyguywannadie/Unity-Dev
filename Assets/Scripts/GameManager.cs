@@ -12,7 +12,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] GameObject gameOverUI;
     [SerializeField] GameObject gameWinUI;
     [SerializeField] TMP_Text livesUI;
-
+    [SerializeField] TMP_Text ScoreUI;
 
     [SerializeField] GameObject respawn;
     [SerializeField] GameObject startingRespawn;
@@ -29,8 +29,10 @@ public class GameManager : Singleton<GameManager>
 
     public State state = State.TITLE;
     private int lives = 0;
+    [SerializeField] private IntVariable score;
 
     public int Lives { get { return lives; } set { lives = value; livesUI.text = "x " + lives.ToString(); } }
+    public int Score { get { return score.value; } set { score.value = value; ScoreUI.text = "Score\n-" + score.value.ToString() + "-"; } }
 
     // Start is called before the first frame update
     void Start()
@@ -41,52 +43,53 @@ public class GameManager : Singleton<GameManager>
     // Update is called once per frame
     void Update()
     {
-        switch (state)
-        {
-            case State.TITLE:
-                titleUI.SetActive(true);
-                gameUI.SetActive(false);
-                gameOverUI.SetActive(false);
-				gameWinUI.SetActive(false);
-				Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-                break;
+    //    switch (state)
+    //    {
+    //        case State.TITLE:
+    //            titleUI.SetActive(true);
+    //            gameUI.SetActive(false);
+    //            gameOverUI.SetActive(false);
+				//gameWinUI.SetActive(false);
+				//Cursor.lockState = CursorLockMode.None;
+    //            Cursor.visible = true;
+    //            break;
 
-            case State.START_GAME:
-                titleUI.SetActive(false);
-                gameUI.SetActive(true);
-                state = State.MAIN_GAME;
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-                gameStartEvent.RaiseEvent();
-                respawnEvent.RaiseEvent(respawn);
-                break;
+    //        case State.START_GAME:
+    //            titleUI.SetActive(false);
+    //            gameUI.SetActive(true);
+    //            state = State.MAIN_GAME;
+    //            Cursor.lockState = CursorLockMode.Locked;
+    //            Cursor.visible = false;
+    //            gameStartEvent.RaiseEvent();
+    //            respawnEvent.RaiseEvent(respawn);
+    //            break;
 
-            case State.MAIN_GAME:
-                if (this.Lives <= 0)
-                {
-                    state = State.GAME_OVER;
-                    gameOverUI.SetActive(true);
-                    gameUI.SetActive(false);
-                }
-                break;
+    //        case State.MAIN_GAME:
+    //            if (this.Lives <= 0)
+    //            {
+    //                state = State.GAME_OVER;
+    //                gameOverUI.SetActive(true);
+    //                gameUI.SetActive(false);
+    //            }
+    //            break;
 
-            case State.GAME_OVER:
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-                break;
+    //        case State.GAME_OVER:
+    //            Cursor.lockState = CursorLockMode.None;
+    //            Cursor.visible = true;
+    //            break;
 
-            case State.GAME_WIN:
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-                break;
-        }
+    //        case State.GAME_WIN:
+    //            Cursor.lockState = CursorLockMode.None;
+    //            Cursor.visible = true;
+    //            break;
+    //    }
     }
 
     public void StartGame()
     {
         state = State.START_GAME;
         this.Lives = 3;
+        this.Score = 0;
 		gameRestartEvent.RaiseEvent();
 	}
 
@@ -106,6 +109,11 @@ public class GameManager : Singleton<GameManager>
     public void ChangeRespawn(GameObject newspawn)
     {
         respawn = newspawn;
+    }
+
+    public void UpdateScore(int score)
+    {
+        this.Score += score;
     }
 
     public void OnPlayerDead()

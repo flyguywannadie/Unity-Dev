@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc708d3e2f5aa3e43bb996e035942d2b, type: 3}
-  m_Name: liquid
+  m_Name: enemy
   m_EditorClassIdentifier: 
   ammoType: 1
-  lifetime: 10
-  damage: 1
+  lifetime: 0
+  damage: 5
   destroyOnImpact: 1
-  impactPrefab: {fileID: 1997773235792374, guid: ca1b1da5e83888f49b3a1148500975b9, type: 3}
-  force: 25
+  impactPrefab: {fileID: 3333326108490588851, guid: 0cb9e60b29a8cfc459b4240ea3d34192, type: 3}
+  force: 45
   forceMode: 2
   damageOverTime: 0
   bounce: 0

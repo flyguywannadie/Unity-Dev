@@ -7,7 +7,7 @@ using UnityEngine.Splines;
 public class PathFollower : MonoBehaviour
 {
 	[SerializeField] SplineContainer splineContainer;
-	[Range(0,40)] public float speed = 1;
+	[Range(-40,40)] public float speed = 1;
 	[Range(0,1)] public float tdistance = 0;
 
 	//public float speed { get; private set; }
@@ -23,6 +23,10 @@ public class PathFollower : MonoBehaviour
 	private void Update()
 	{
 		distance += speed * Time.deltaTime;
+		if (Input.GetKey(KeyCode.Space))
+		{
+			distance += speed * Time.deltaTime;
+		}
 		UpdateTransform(math.frac(tdistance));
 	}
 
